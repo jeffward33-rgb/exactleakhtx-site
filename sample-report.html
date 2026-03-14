@@ -578,6 +578,20 @@ function clearSig(canvasId){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+// Auto-expand textareas to fit content before printing
+function expandTextareas(){
+  document.querySelectorAll("textarea").forEach(function(ta){
+    ta.style.height = "auto";
+    ta.style.height = ta.scrollHeight + "px";
+  });
+}
+document.querySelectorAll("textarea").forEach(function(ta){
+  ta.addEventListener("input", function(){ this.style.height = "auto"; this.style.height = this.scrollHeight + "px"; });
+});
+window.addEventListener("beforeprint", expandTextareas);
+// Also expand on load for pre-filled sample
+window.addEventListener("load", expandTextareas);
+
 // Auto-fill signature dates from report date, and sync when changed
 function syncSigDates(){
   var rd = document.getElementById('reportDate').value;
