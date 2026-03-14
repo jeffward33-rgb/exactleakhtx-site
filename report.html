@@ -121,7 +121,7 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
     <div class="field"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
   </div>
   <div class="row">
-    <div class="field" style="flex:2"><label>Property Address</label><input type="text" placeholder="Street address, City, TX ZIP"></div>
+    <div class="field" style="flex:2"><label>Property Address <button type="button" onclick="geoFillAddress()" style="font-size:0.75em;padding:3px 8px;margin-left:8px;background:var(--blue);color:#fff;border:none;border-radius:3px;cursor:pointer">📍 Use My Location</button></label><input type="text" id="propAddress" placeholder="Street address, City, TX ZIP"></div>
     <div class="field"><label>Email</label><input type="email" placeholder="email@example.com"></div>
   </div>
   <div class="row">
@@ -356,7 +356,7 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
       <label>Homeowner Signature</label>
       <div class="sig-area">
         <canvas class="sig-canvas" id="sigHomeowner"></canvas>
-        <div class="sig-line">Homeowner / Authorized Representative &nbsp;&nbsp;&nbsp; Date: ___________</div>
+        <div class="sig-line">Homeowner / Authorized Representative &nbsp;&nbsp;&nbsp; Date: <input type="date" class="sig-date" id="sigDateHomeowner" style="border:none;border-bottom:1px solid #666;font-size:inherit;padding:2px 4px;width:150px"></div>
         <button type="button" class="sig-clear" onclick="clearSig('sigHomeowner')">Clear Signature</button>
       </div>
     </div>
@@ -364,7 +364,7 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
       <label>Technician Signature</label>
       <div class="sig-area">
         <canvas class="sig-canvas" id="sigTech"></canvas>
-        <div class="sig-line">Technician &nbsp;&nbsp;&nbsp; Date: ___________</div>
+        <div class="sig-line">Technician &nbsp;&nbsp;&nbsp; Date: <input type="date" class="sig-date" id="sigDateTech" style="border:none;border-bottom:1px solid #666;font-size:inherit;padding:2px 4px;width:150px"></div>
         <button type="button" class="sig-clear" onclick="clearSig('sigTech')">Clear Signature</button>
       </div>
     </div>
@@ -536,6 +536,66 @@ function clearSig(canvasId){
   var canvas = document.getElementById(canvasId);
   var ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Auto-fill signature dates from report date, and sync when changed
+function syncSigDates(){
+  var rd = document.getElementById('reportDate').value;
+  if(rd){
+    document.getElementById('sigDateHomeowner').value = rd;
+    document.getElementById('sigDateTech').value = rd;
+  }
+}
+document.getElementById('reportDate').addEventListener('change', syncSigDates);
+syncSigDates();
+
+// Geolocation → address auto-fill
+function geoFillAddress(){
+  var addrField = document.getElementById('propAddress');
+  if(!navigator.geolocation){
+    alert('Geolocation is not supported by this browser.');
+    return;
+  }
+  addrField.value = 'Locating...';
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      var lat = pos.coords.latitude;
+      var lng = pos.coords.longitude;
+      fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng+'&addressdetails=1')
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if(data && data.address){
+            var a = data.address;
+            var num = a.house_number || '';
+            var street = a.road || '';
+            var city = a.city || a.town || a.village || a.hamlet || '';
+            var state = a.state || 'TX';
+            // Use state abbreviation if possible
+            var stateAbbr = state;
+            if(state === 'Texas') stateAbbr = 'TX';
+            var zip = a.postcode || '';
+            var parts = [];
+            if(num || street) parts.push((num + ' ' + street).trim());
+            if(city) parts.push(city);
+            if(stateAbbr || zip) parts.push((stateAbbr + ' ' + zip).trim());
+            addrField.value = parts.join(', ');
+          } else {
+            addrField.value = '';
+            alert('Could not determine address. Please enter manually.');
+          }
+        })
+        .catch(function(){
+          addrField.value = '';
+          alert('Address lookup failed. Please enter manually.');
+        });
+    },
+    function(err){
+      addrField.value = '';
+      if(err.code === 1) alert('Location permission denied. Please allow location access or enter address manually.');
+      else alert('Could not get location. Please enter address manually.');
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
 }
 
 // Initialize signature pads
