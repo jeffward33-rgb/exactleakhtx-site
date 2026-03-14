@@ -96,7 +96,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
 }
 .logo-img {
-  height: 50px;
+  height: 80px;
   width: auto;
 }
 .logo-icon { color: var(--accent); margin-right: 4px; }
