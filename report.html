@@ -38,8 +38,11 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
 .photo-slot .caption-input{width:100%;margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:14px}
 .photo-slot .label{font-weight:600;color:var(--navy);font-size:0.85em;margin-bottom:8px}
 .photo-slot img{max-width:100%;max-height:200px;border-radius:4px;margin:8px 0}
-.sig-area{border:1px solid var(--border);border-radius:6px;padding:16px;margin:12px 0;min-height:100px;background:var(--light)}
-.sig-line{border-top:1px solid var(--text);margin-top:60px;padding-top:4px;font-size:0.85em;color:#666}
+.sig-area{border:1px solid var(--border);border-radius:6px;padding:8px;margin:12px 0;background:var(--light);text-align:center}
+.sig-canvas{border:1px solid #ccc;border-radius:4px;background:#fff;touch-action:none;cursor:crosshair;width:100%;max-width:500px;height:150px}
+.sig-line{padding-top:4px;font-size:0.85em;color:#666;margin-top:4px}
+.sig-clear{background:none;border:1px solid var(--border);padding:6px 14px;border-radius:4px;font-size:0.8em;color:#666;cursor:pointer;margin-top:6px}
+.sig-clear:hover{background:#eee}
 .disclaimer{font-size:0.8em;color:#666;line-height:1.6;padding:12px;background:var(--light);border-radius:6px}
 .btn{background:var(--blue);color:#fff;border:none;padding:14px 28px;border-radius:6px;font-size:1em;font-weight:600;cursor:pointer;margin:8px 4px}
 .btn:hover{background:var(--navy)}
@@ -60,6 +63,8 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
   .checkbox-item{border:none;padding:4px 8px}
   .photo-slot{border:1px solid #ccc;page-break-inside:avoid}
   .photo-slot input[type="file"]{display:none}
+  .sig-canvas{border:1px solid #ccc!important}
+  .sig-clear{display:none}
   .actions{display:none}
   .header{border-bottom:2px solid var(--navy)}
   .disclaimer{background:#f8f8f8!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -332,11 +337,19 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
   <div class="row">
     <div class="field">
       <label>Homeowner Signature</label>
-      <div class="sig-area"><div class="sig-line">Homeowner / Authorized Representative &nbsp;&nbsp;&nbsp; Date: ___________</div></div>
+      <div class="sig-area">
+        <canvas class="sig-canvas" id="sigHomeowner"></canvas>
+        <div class="sig-line">Homeowner / Authorized Representative &nbsp;&nbsp;&nbsp; Date: ___________</div>
+        <button type="button" class="sig-clear" onclick="clearSig('sigHomeowner')">Clear Signature</button>
+      </div>
     </div>
     <div class="field">
       <label>Technician Signature</label>
-      <div class="sig-area"><div class="sig-line">Technician &nbsp;&nbsp;&nbsp; Date: ___________</div></div>
+      <div class="sig-area">
+        <canvas class="sig-canvas" id="sigTech"></canvas>
+        <div class="sig-line">Technician &nbsp;&nbsp;&nbsp; Date: ___________</div>
+        <button type="button" class="sig-clear" onclick="clearSig('sigTech')">Clear Signature</button>
+      </div>
     </div>
   </div>
 </div>
@@ -437,6 +450,80 @@ function addPhotoSlot(){
   div.innerHTML = '<div class="label">Additional Photo</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption">';
   grid.appendChild(div);
 }
+// Signature pad functionality
+function initSigPad(canvasId){
+  var canvas = document.getElementById(canvasId);
+  var ctx = canvas.getContext('2d');
+  var drawing = false;
+  var lastX, lastY;
+
+  function resize(){
+    var rect = canvas.getBoundingClientRect();
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    ctx.strokeStyle = '#1B365D';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function getPos(e){
+    var rect = canvas.getBoundingClientRect();
+    var touch = e.touches ? e.touches[0] : e;
+    return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+  }
+
+  function start(e){
+    e.preventDefault();
+    drawing = true;
+    var pos = getPos(e);
+    lastX = pos.x;
+    lastY = pos.y;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+  }
+
+  function move(e){
+    if(!drawing) return;
+    e.preventDefault();
+    var pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    lastX = pos.x;
+    lastY = pos.y;
+  }
+
+  function stop(e){
+    if(drawing){
+      e.preventDefault();
+      drawing = false;
+    }
+  }
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', stop);
+  canvas.addEventListener('mouseleave', stop);
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove', move, {passive:false});
+  canvas.addEventListener('touchend', stop, {passive:false});
+}
+
+function clearSig(canvasId){
+  var canvas = document.getElementById(canvasId);
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Initialize signature pads
+initSigPad('sigHomeowner');
+initSigPad('sigTech');
 </script>
 </body>
 </html>
