@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exact Leak Detection HTX — SAMPLE Inspection Report</title>
+<style>
+:root{--navy:#1B365D;--blue:#2B8FCC;--red:#D42B2B;--light:#f4f6f8;--border:#ddd;--text:#333}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--text);background:#fff;font-size:16px;line-height:1.5}
+.report{max-width:900px;margin:0 auto;padding:16px}
+h1{font-size:1.4em;color:var(--navy);margin:0}
+h2{font-size:1.1em;color:#fff;background:var(--navy);padding:10px 16px;margin:16px 0 0;border-radius:6px 6px 0 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+h2 .toggle{font-size:0.8em;opacity:0.7}
+.section{border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:16px;margin-bottom:8px;background:#fff}
+.section.collapsed{display:none}
+.header{display:flex;align-items:center;gap:16px;padding:16px;border-bottom:3px solid var(--navy);text-align:left}
+.header .logo-img{height:80px;width:auto}
+.header .header-text{flex:1}
+.header .company{font-size:1.6em;font-weight:700;color:var(--navy)}
+.header .tagline{color:var(--blue);font-size:0.95em;margin:4px 0 8px}
+.header .contact{font-size:0.85em;color:#666}
+.header .contact a{color:var(--blue);text-decoration:none}
+.report-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:16px}
+.report-meta label{font-weight:600;font-size:0.85em;color:var(--navy)}
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.field{flex:1;min-width:200px}
+.field label{display:block;font-weight:600;font-size:0.85em;color:var(--navy);margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:4px;font-size:16px;font-family:inherit;-webkit-appearance:none}
+.field textarea{min-height:80px;resize:vertical}
+.field select{background:#fff}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 2px rgba(43,143,204,0.2)}
+.checkbox-group{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.checkbox-item{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--border);border-radius:6px;min-width:160px;flex:1;cursor:pointer}
+.checkbox-item input[type="checkbox"],.checkbox-item input[type="radio"]{width:22px;height:22px;cursor:pointer}
+.checkbox-item label{font-size:0.9em;cursor:pointer}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:8px}
+.photo-slot{border:2px dashed var(--border);border-radius:8px;padding:16px;text-align:center;min-height:180px;display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--light)}
+.photo-slot input[type="file"]{margin:8px 0}
+.photo-slot .caption-input{width:100%;margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:14px}
+.photo-slot .label{font-weight:600;color:var(--navy);font-size:0.85em;margin-bottom:8px}
+.photo-slot img{max-width:100%;max-height:200px;border-radius:4px;margin:8px 0}
+.sig-area{border:1px solid var(--border);border-radius:6px;padding:8px;margin:12px 0;background:var(--light);text-align:center}
+.sig-canvas{border:1px solid #ccc;border-radius:4px;background:#fff;touch-action:none;cursor:crosshair;width:100%;max-width:500px;height:150px}
+.sig-line{padding-top:4px;font-size:0.85em;color:#666;margin-top:4px}
+.sig-clear{background:none;border:1px solid var(--border);padding:6px 14px;border-radius:4px;font-size:0.8em;color:#666;cursor:pointer;margin-top:6px}
+.sig-clear:hover{background:#eee}
+.disclaimer{font-size:0.8em;color:#666;line-height:1.6;padding:12px;background:var(--light);border-radius:6px}
+.btn{background:var(--blue);color:#fff;border:none;padding:14px 28px;border-radius:6px;font-size:1em;font-weight:600;cursor:pointer;margin:8px 4px}
+.btn:hover{background:var(--navy)}
+.btn-red{background:var(--red)}
+.actions{text-align:center;padding:24px 0}
+.pf-result{display:inline-block;padding:6px 16px;border-radius:4px;font-weight:700;font-size:0.95em;margin-top:4px}
+.pf-pass{background:#d4edda;color:#155724}
+.pf-fail{background:#f8d7da;color:#721c24}
+@media print{
+  body{font-size:10pt;line-height:1.3}
+  .report{padding:0;max-width:100%}
+  .header{padding:8px 12px;border-bottom:2px solid var(--navy);gap:12px}
+  .header .logo-img{height:60px}
+  .header .company{font-size:1.3em}
+  .header .tagline{font-size:0.8em;margin:2px 0 4px}
+  .header .contact{font-size:0.75em}
+  .report-meta{padding:6px 0;margin-bottom:8px;gap:4px}
+  .report-meta .field{min-width:150px}
+  h2{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;margin:10px 0 0;padding:8px 12px;font-size:1em;page-break-after:avoid;break-after:avoid}
+  h2 .toggle{display:none}
+  .section{border:1px solid #ccc!important;padding:8px 12px;margin-bottom:4px;page-break-before:avoid;break-before:avoid;break-inside:avoid}
+  .section.collapsed{display:block!important}
+  .row{gap:6px;margin-bottom:6px}
+  .field{min-width:140px}
+  .field label{font-size:0.75em;margin-bottom:1px}
+  .field input,.field select,.field textarea{border:none;border-bottom:1px solid #ccc;padding:2px 0;font-size:9pt;min-height:auto}
+  .field textarea{min-height:40px}
+  .field input[type="file"]{display:none}
+  .checkbox-group{gap:4px;margin-bottom:6px}
+  .checkbox-item{border:none;padding:2px 6px}
+  .checkbox-item input[type="checkbox"],.checkbox-item input[type="radio"]{width:14px;height:14px}
+  .checkbox-item label{font-size:0.8em}
+  .photo-grid{gap:8px}
+  .photo-slot{border:1px solid #ccc;padding:8px;min-height:120px;page-break-inside:avoid;break-inside:avoid}
+  .photo-slot input[type="file"]{display:none}
+  .photo-slot .label{font-size:0.75em}
+  .sig-area{padding:4px;margin:6px 0}
+  .sig-canvas{height:100px;border:1px solid #ccc!important}
+  .sig-line{font-size:0.75em;margin-top:2px}
+  .sig-clear{display:none}
+  .disclaimer{background:#f8f8f8!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:0.7em;padding:8px;line-height:1.4}
+  .btn{display:none}
+  .actions{display:none}
+  p{margin-bottom:2px}
+}
+@media(max-width:600px){
+  .row{flex-direction:column;gap:8px}
+  .field{min-width:100%}
+  .photo-grid{grid-template-columns:1fr}
+  .report-meta{flex-direction:column}
+  .checkbox-group{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="report">
+<div style="background:#D42B2B;color:#fff;text-align:center;padding:10px;font-weight:700;font-size:1.1em;letter-spacing:2px;margin-bottom:8px;border-radius:6px">⚠️ SAMPLE REPORT — FOR DEMONSTRATION PURPOSES ONLY ⚠️</div>
+<div class="header">
+  <img src="images/logo.png" alt="Exact Leak Detection HTX" class="logo-img">
+  <div class="header-text">
+    <div class="company">EXACT LEAK DETECTION <span style="color:#2B8FCC">HTX</span></div>
+    <div class="tagline">We Find Leaks. Without the Destruction.</div>
+    <div class="contact">
+      <strong>Phone/Text:</strong> <a href="tel:3462223951">(346) 222-3951</a> &nbsp;|&nbsp;
+      <strong>Email:</strong> <a href="mailto:info@exactleakhtx.com">info@exactleakhtx.com</a> &nbsp;|&nbsp;
+      <strong>Web:</strong> <a href="https://exactleakhtx.com">exactleakhtx.com</a>
+    </div>
+  </div>
+</div>
+
+<div class="report-meta">
+  <div class="field" style="flex:0 1 280px"><label>Report #</label><input type="text" id="reportNum" value="ELD-2026-0047"></div>
+  <div class="field" style="flex:0 1 200px"><label>Date</label><input type="date" id="reportDate"></div>
+  <div class="field" style="flex:0 1 200px"><label>Technician</label><input type="text" id="techName" value="Jeff Ward"></div>
+</div>
+<!-- SECTION 1: HOMEOWNER DETAILS -->
+<h2 onclick="toggleSection(this)">1. Homeowner Details <span class="toggle">▼</span></h2>
+<div class="section">
+  <div class="row">
+    <div class="field"><label>Homeowner Name</label><input type="text" value="Michael & Sarah Thompson"></div>
+    <div class="field"><label>Phone</label><input type="tel" value="(281) 555-0193"></div>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:2"><label>Property Address </label><input type="text" id="propAddress" value="4218 Cypress Ridge Trail, Spring, TX 77386"></div>
+    <div class="field"><label>Email</label><input type="email" value="mthompson84@gmail.com"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Insurance Company</label><input type="text" value="State Farm"></div>
+    <div class="field"><label>Claim Number</label><input type="text" value="47-B892-7741"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Adjuster Name</label><input type="text" value="David Eastwood"></div>
+    <div class="field"><label>Adjuster Phone/Email</label><input type="text" value="david.eastwood@libertymutual.com"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Policy Number</label><input type="text" value="98-BQ-7741-2"></div>
+    <div class="field"><label>Date of Loss</label><input type="date" value="2026-03-08"></div>
+  </div>
+</div>
+
+<!-- SECTION 2: SITE CONDITIONS -->
+<h2 onclick="toggleSection(this)">2. Site Conditions <span class="toggle">▼</span></h2>
+<div class="section">
+  <div class="row">
+    <div class="field"><label>Arrival Date/Time</label><input type="datetime-local" value="2026-03-12T09:15"></div>
+    <div class="field"><label>Weather Conditions</label>
+      <select><option value="">Select...</option><option selected>Clear/Sunny</option><option>Cloudy</option><option>Rain</option><option>Storms</option><option>Hot & Humid</option></select>
+    </div>
+    <div class="field"><label>Temperature (°F)</label><input type="number" value="72"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Property Type</label>
+      <select><option value="">Select...</option><option selected>Single-Family Residential</option><option>Townhome/Condo</option><option>Multi-Family</option><option>Commercial</option><option>Other</option></select>
+    </div>
+    <div class="field"><label>Year Built</label><input type="number" value="2004"></div>
+    <div class="field"><label>Number of Stories</label>
+      <select><option value="">Select...</option><option>1</option><option selected>2</option><option>3+</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Foundation Type</label>
+      <select><option value="">Select...</option><option selected>Slab-on-Grade</option><option>Pier & Beam</option><option>Basement</option><option>Combination</option><option>Unknown</option></select>
+    </div>
+    <div class="field"><label>Water Source</label>
+      <select><option value="">Select...</option><option selected>Municipal</option><option>Well</option><option>Other</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Water Meter Location</label><input type="text" value="Front yard, left side of driveway near sidewalk"></div>
+    <div class="field"><label>Main Shut-Off Location</label><input type="text" value="Garage, left wall — 3/4 inch gate valve"></div>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:1 1 100%"><label>General Property Observations</label><textarea >Property in good overall condition. Homeowner reports noticing elevated water bills over the past 2 months and a warm/damp spot on the master bathroom floor near the toilet. No visible standing water. Faint musty odor detected in master bathroom. No visible mold. Water heater located in garage, appears functional, no visible leaks at unit.></textarea></div>
+  </div>
+</div>
+
+<!-- SECTION 3: TESTING OPTIONS -->
+<h2 onclick="toggleSection(this)">3. Testing Options <span class="toggle">▼</span></h2>
+<div class="section">
+  <p style="font-size:0.9em;color:#666;margin-bottom:12px">Select all detection methods used during this inspection:</p>
+  <div class="checkbox-group">
+    <div class="checkbox-item"><input type="checkbox" id="m1" checked><label for="m1">Thermal Imaging</label></div>
+    <div class="checkbox-item"><input type="checkbox" id="m2" checked><label for="m2">Acoustic Detection</label></div>
+    <div class="checkbox-item"><input type="checkbox" id="m3" checked><label for="m3">Moisture Mapping</label></div>
+    <div class="checkbox-item"><input type="checkbox" id="m4" checked><label for="m4">Pressure Testing</label></div>
+    <div class="checkbox-item"><input type="checkbox" id="m5" checked><label for="m5">Visual Inspection</label></div>
+    <div class="checkbox-item"><input type="checkbox" id="m6"><label for="m6">Borescope</label></div>
+    <div class="checkbox-item"><input type="checkbox" id="m7"><label for="m7">Tracer Gas</label></div>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:1 1 100%"><label>Testing Notes / Additional Methods</label><textarea >Equipment used: FLIR E86 thermal camera, Sewerin AquaTest T10 acoustic detector, Tramex MRH III moisture meter, Watts IWTG pressure test gauge (0-200 PSI). Visual inspection of all accessible plumbing fixtures and connections. Pressure test performed on hot and cold supply lines independently.></textarea></div>
+  </div>
+</div>
+
+<!-- SECTION 4: SYSTEM TESTS -->
+<h2 onclick="toggleSection(this)">4. System Tests <span class="toggle">▼</span></h2>
+<div class="section">
+  <div class="row">
+    <div class="field"><label>Water Meter Reading — Arrival</label><input type="text" value="47,892.3 gal"></div>
+    <div class="field"><label>Water Meter Reading — Departure</label><input type="text" value="47,893.1 gal"></div>
+    <div class="field"><label>Meter Moving on Arrival?</label>
+      <select><option value="">Select...</option><option>Yes — actively spinning</option><option selected>Yes — slow movement</option><option>No — stationary</option><option>Unable to determine</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Static Water Pressure (PSI)</label><input type="number" value="62"></div>
+    <div class="field"><label>Supply Line Test Result</label>
+      <select><option value="">Select...</option><option selected>Pass — No leak detected</option><option selected>Fail — Leak detected</option><option>Inconclusive</option><option>Not Tested</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Drain Line Test Result</label>
+      <select><option value="">Select...</option><option>Pass — No leak detected</option><option>Fail — Leak detected</option><option>Inconclusive</option><option>Not Tested</option></select>
+    </div>
+    <div class="field"><label>Irrigation System Test</label>
+      <select><option value="">Select...</option><option>Pass — No leak detected</option><option>Fail — Leak detected</option><option>Inconclusive</option><option>Not Tested</option><option selected>N/A — No irrigation</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:1 1 100%"><label>Fixtures Tested</label><textarea >All fixtures tested with water running and shut off: kitchen sink, kitchen dishwasher supply, master bath toilet, master bath shower, master bath dual vanity, hall bath toilet, hall bath shower/tub, guest bath toilet, laundry supply lines (hot/cold), water heater, 3 exterior hose bibs (front, back left, back right). All fixture supply connections intact — no leaks detected at accessible connections.></textarea></div>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:1 1 100%"><label>Areas of Elevated Moisture (with readings)</label><textarea >Master bath floor (tile, near toilet base) — 38% — Normal &lt;15%
+Master bath floor (tile, 3ft from toilet toward shower) — 29% — Normal &lt;15%
+Master bath subfloor at wall base — 44% — Normal &lt;15%
+Master bedroom carpet (adjacent to bath wall) — 22% — Normal &lt;15%
+Hall bath floor — 8% — Normal ✓
+Kitchen floor near dishwasher — 6% — Normal ✓
+All other tested areas within normal range.></textarea></div>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:1 1 100%"><label>Thermal Anomalies Detected</label><textarea >Thermal anomaly detected on master bathroom floor: approximately 3ft x 4ft area showing elevated temperature (+6.2°F above surrounding floor surface). Pattern consistent with hot water supply line leak under slab. Warmest point located approximately 18 inches northwest of toilet base. No thermal anomalies detected in any other areas of the home.></textarea></div>
+  </div>
+</div>
+
+<!-- SECTION 5: PRESSURE TEST INFO -->
+<h2 onclick="toggleSection(this)">5. Pressure Test Info <span class="toggle">▼</span></h2>
+<div class="section">
+  <div class="row">
+    <div class="field"><label>System Isolated</label>
+      <select><option value="">Select...</option><option selected>Hot Supply Only</option><option>Cold Supply Only</option><option>Both Hot & Cold</option><option>Whole House</option><option>Specific Zone</option></select>
+    </div>
+    <div class="field"><label>Test Pressure (PSI)</label><input type="number" value="60" id="testPSI"></div>
+    <div class="field"><label>Test Duration</label>
+      <select><option value="">Select...</option><option selected>15 minutes</option><option>30 minutes</option><option>1 hour</option><option>2 hours</option><option>Other</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Starting Pressure (PSI)</label><input type="number" id="startPSI" oninput="calcDrop()" value="60"></div>
+    <div class="field"><label>Ending Pressure (PSI)</label><input type="number" id="endPSI" oninput="calcDrop()" value="48"></div>
+    <div class="field"><label>Pressure Drop (PSI)</label><input type="text" id="dropPSI" readonly style="background:#f0f0f0"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Result</label>
+      <div style="display:flex;gap:16px;margin-top:4px">
+        <div class="checkbox-item" style="flex:0"><input type="radio" name="ptResult" id="ptPass" value="pass"><label for="ptPass">PASS</label></div>
+        <div class="checkbox-item" style="flex:0"><input type="radio" name="ptResult" id="ptFail" value="fail" checked><label for="ptFail">FAIL</label></div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:1 1 100%"><label>Pressure Test Notes</label><textarea >Initial test: whole house pressurized to 60 PSI with all fixtures closed — pressure dropped to 52 PSI in 15 minutes. FAIL.
+
+Isolation test #1: Cold supply isolated, hot supply pressurized to 60 PSI — dropped to 48 PSI in 15 minutes. FAIL — confirms leak on hot supply side.
+
+Isolation test #2: Hot supply isolated, cold supply pressurized to 60 PSI — held at 60 PSI for 15 minutes. PASS — cold supply intact.
+
+Conclusion: Active leak confirmed on hot water supply line. Pressure loss rate and thermal imaging indicate leak location under master bathroom slab.></textarea></div>
+  </div>
+</div>
+
+<!-- SECTION 6: FINDINGS -->
+<h2 onclick="toggleSection(this)">6. Findings <span class="toggle">▼</span></h2>
+<div class="section">
+  <div id="findingsContainer">
+    <div class="finding-entry" style="border:1px solid #e0e0e0;border-radius:6px;padding:12px;margin-bottom:12px;background:var(--light)">
+      <strong style="color:var(--navy)">Leak Location #1</strong>
+      <div class="row" style="margin-top:8px">
+        <div class="field"><label>Location in Home</label><input type="text" value="Master bathroom, under slab — hot water supply line, approx. 18 inches NW of toilet base"></div>
+        <div class="field"><label>Severity</label>
+          <select><option value="">Select...</option><option selected>Active — Continuous flow</option><option>Slow — Seeping</option><option>Intermittent</option><option>Pinhole</option><option>Major Break</option></select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:1 1 100%"><label>Description of Findings</label><textarea >Active leak identified on the hot water supply line running beneath the concrete slab foundation in the master bathroom area. Leak was detected through a combination of methods:
+
+1. Thermal imaging revealed a 3ft x 4ft warm zone on the bathroom floor (6.2°F above ambient)
+2. Acoustic detection confirmed water flow noise concentrated at a point approx. 18" NW of the toilet base
+3. Moisture meter readings showed elevated moisture levels (38-44%) across the affected area
+4. Pressure test confirmed hot supply line failure (12 PSI drop in 15 minutes)
+
+Based on the thermal pattern and acoustic signature, the leak appears to be at a joint or fitting on the copper hot water supply line. The pipe is estimated to be at a depth of approximately 4-6 inches below the slab surface. The sustained leak has caused moisture migration into the adjacent master bedroom carpet and subfloor materials.></textarea></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Affected Areas</label><input type="text" value="Master bathroom floor, master bathroom wall base, master bedroom carpet (adjacent wall, approx. 2ft into room)"></div>
+        <div class="field"><label>Estimated Duration</label>
+          <select><option value="">Select...</option><option>Recent (days)</option><option selected>Short-term (weeks)</option><option>Long-term (months)</option><option>Chronic (years)</option><option>Unable to determine</option></select>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" style="margin-top:16px">
+    <div class="field" style="flex:1 1 100%"><label>Summary of All Findings</label><textarea >SUMMARY: Active hot water supply line leak confirmed beneath the concrete slab foundation in the master bathroom of the residence at 4218 Cypress Ridge Trail, Spring, TX 77386.
+
+The leak was identified using thermal imaging, acoustic detection, moisture mapping, and pressure testing. All methods converge on a single leak point located approximately 18 inches northwest of the master bathroom toilet base.
+
+The hot supply line failed pressure testing (12 PSI drop in 15 minutes at 60 PSI). Cold supply line passed. Drain lines were not tested as the leak signature is consistent with a pressurized supply line failure.
+
+Moisture levels in the affected area range from 22-44% (normal &lt;15%). The leak appears to have been active for approximately 2-4 weeks based on moisture migration patterns and homeowner-reported timeline of elevated water bills.
+
+Immediate repair is recommended to prevent further damage to the slab, subfloor, and adjacent building materials. A licensed plumber should perform a spot repair or reroute of the affected hot water supply line.></textarea></div>
+  </div>
+</div>
+
+<!-- SECTION 7: PICTURES -->
+<h2 onclick="toggleSection(this)">7. Pictures <span class="toggle">▼</span></h2>
+<div class="section">
+  <div class="photo-grid">
+    <div class="photo-slot"><div class="label">Exterior / Front of Property</div><img src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Front exterior of residence at 4218 Cypress Ridge Trail, Spring TX" style="max-width:100%;max-height:200px;border-radius:4px;margin:8px 0"><div style="font-size:0.85em;color:#666;padding:4px">Front exterior of residence at 4218 Cypress Ridge Trail, Spring TX</div></div>
+    <div class="photo-slot"><div class="label">Water Meter</div><img src="https://images.pexels.com/photos/5691586/pexels-photo-5691586.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Water meter located front yard, left side of driveway — meter dial showing slow movement on arrival" style="max-width:100%;max-height:200px;border-radius:4px;margin:8px 0"><div style="font-size:0.85em;color:#666;padding:4px">Water meter located front yard, left side of driveway — meter dial showing slow movement on arrival</div></div>
+    <div class="photo-slot"><div class="label">Affected Area #1</div><img src="https://images.pexels.com/photos/6492118/pexels-photo-6492118.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Master bathroom floor — elevated moisture detected across tile surface near toilet base" style="max-width:100%;max-height:200px;border-radius:4px;margin:8px 0"><div style="font-size:0.85em;color:#666;padding:4px">Master bathroom floor — elevated moisture detected across tile surface near toilet base</div></div>
+    <div class="photo-slot"><div class="label">Affected Area #2</div><img src="https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Master bedroom carpet adjacent to bathroom wall — moisture migration visible at baseboard" style="max-width:100%;max-height:200px;border-radius:4px;margin:8px 0"><div style="font-size:0.85em;color:#666;padding:4px">Master bedroom carpet adjacent to bathroom wall — moisture migration visible at baseboard</div></div>
+    <div class="photo-slot"><div class="label">Thermal Image #1</div><div style="background:linear-gradient(135deg,#00f,#0ff,#0f0,#ff0,#f00);width:100%;height:160px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;text-shadow:1px 1px 2px rgba(0,0,0,0.8);margin:8px 0">FLIR Thermal Capture</div><div style="font-size:0.85em;color:#666;padding:4px">FLIR E86 thermal capture — master bathroom floor showing 6.2°F hot zone NW of toilet (hot supply leak beneath slab)</div></div>
+    <div class="photo-slot"><div class="label">Thermal Image #2</div><div style="background:linear-gradient(135deg,#00f,#0ff,#0f0,#ff0,#f00);width:100%;height:160px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;text-shadow:1px 1px 2px rgba(0,0,0,0.8);margin:8px 0">FLIR Thermal Capture</div><div style="font-size:0.85em;color:#666;padding:4px">FLIR E86 thermal capture — wider view of master bath/bedroom wall showing heat migration pattern from slab leak</div></div>
+    <div class="photo-slot"><div class="label">Moisture Reading</div><img src="https://images.pexels.com/photos/5691622/pexels-photo-5691622.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Moisture meter reading" style="max-width:100%;max-height:200px;border-radius:4px;margin:8px 0"><div style="font-size:0.85em;color:#666;padding:4px">Tramex MRH III moisture meter — reading 44% at wall base adjacent to suspected leak point (normal &lt;15%)</div></div>
+    <div class="photo-slot"><div class="label">Equipment Used</div><img src="https://images.pexels.com/photos/6419126/pexels-photo-6419126.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Equipment" style="max-width:100%;max-height:200px;border-radius:4px;margin:8px 0"><div style="font-size:0.85em;color:#666;padding:4px">Inspection equipment deployed: FLIR E86 thermal camera, Sewerin AquaTest T10 acoustic detector, Tramex MRH III moisture meter, pressure test gauge</div></div>
+    <div class="photo-slot"><div class="label">Damage Documentation #1</div><img src="https://images.pexels.com/photos/6492118/pexels-photo-6492118.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Damage" style="max-width:100%;max-height:200px;border-radius:4px;margin:8px 0"><div style="font-size:0.85em;color:#666;padding:4px">Baseboard and wall base in master bathroom showing early signs of moisture wicking — recommend removal for drying</div></div>
+    <div class="photo-slot"><div class="label">Damage Documentation #2</div><img src="https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Damage" style="max-width:100%;max-height:200px;border-radius:4px;margin:8px 0"><div style="font-size:0.85em;color:#666;padding:4px">Master bedroom carpet at bathroom wall — slight discoloration and elevated moisture (22%) indicating subsurface moisture migration</div></div>
+  </div>
+  
+</div>
+
+<!-- SECTION 8: RECOMMENDATIONS -->
+<h2 onclick="toggleSection(this)">8. Recommendations <span class="toggle">▼</span></h2>
+<div class="section">
+  <div class="row">
+    <div class="field" style="flex:1 1 100%"><label>Recommended Repairs</label><textarea >1. Engage a licensed plumber to perform a spot repair or reroute of the hot water supply line in the master bathroom area. Reroute through attic or walls is recommended over slab penetration to prevent future slab leak risk.
+
+2. After plumbing repair is completed, water mitigation should be performed in the master bathroom and adjacent master bedroom area. Affected materials (tile underlayment, carpet pad, baseboard) should be evaluated for removal and drying.
+
+3. Post-repair pressure test recommended to confirm successful repair and no additional leaks.></textarea></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Urgency Level</label>
+      <select><option value="">Select...</option><option>Emergency — Immediate repair needed</option><option selected>Urgent — Within 24-48 hours</option><option>Standard — Schedule at convenience</option><option>Monitor — Re-inspect in 30 days</option></select>
+    </div>
+    <div class="field"><label>Referral to Plumber?</label>
+      <select><option value="">Select...</option><option selected>Yes — Homeowner requested referral</option><option>No — Homeowner has own plumber</option><option>N/A</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Additional Testing Needed?</label>
+      <select><option value="">Select...</option><option selected>No — Investigation complete</option><option>Yes — Camera inspection recommended</option><option>Yes — Extended pressure test needed</option><option>Yes — Tracer gas recommended</option><option>Yes — Other (see notes)</option></select>
+    </div>
+    <div class="field"><label>Follow-Up Recommended?</label>
+      <select><option value="">Select...</option><option>No</option><option selected>Yes — After repairs completed</option><option>Yes — Re-inspect in 30 days</option><option>Yes — Other (see notes)</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:1 1 100%"><label>Additional Notes</label><textarea >Homeowner was advised to monitor water usage and meter readings. If water meter continues spinning with all fixtures off, main shut-off should be closed until repair is completed. Provided referral to Spencer's Plumbing (Kingwood, TX) at homeowner's request. Recommend re-inspection after plumbing repair to confirm resolution and assess any additional drying needs.></textarea></div>
+  </div>
+</div>
+
+<!-- SECTION 9: DEPARTURE -->
+<h2 onclick="toggleSection(this)">9. Departure <span class="toggle">▼</span></h2>
+<div class="section">
+  <div class="row">
+    <div class="field"><label>Departure Time</label><input type="datetime-local" value="2026-03-12T11:45"></div>
+    <div class="field"><label>Water Status at Departure</label>
+      <select><option value="">Select...</option><option selected>Water ON — Normal operation</option><option>Water OFF — Main shut off at meter</option><option>Water OFF — Shut off at house valve</option><option>Water OFF — Homeowner request</option><option>Partial — Hot water off, cold on</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Main Shut-Off Position</label>
+      <select><option value="">Select...</option><option selected>Open (normal)</option><option>Closed</option><option>Partially closed</option></select>
+    </div>
+    <div class="field"><label>Temporary Measures Taken</label>
+      <select><option value="">Select...</option><option selected>None</option><option>Water shut off to affected area</option><option>Temporary clamp applied</option><option>Other (see notes)</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field" style="flex:1 1 100%"><label>Departure Notes</label><textarea >Property left with water on at homeowner's request. Homeowner advised to shut off water at main if leak worsens or meter shows increased flow. All equipment removed from premises. Report and thermal images to be delivered via email same day. Homeowner provided with copy of business card and direct phone number for any follow-up questions.></textarea></div>
+  </div>
+  <div class="row">
+    <div class="field">
+      <label>Homeowner Signature</label>
+      <div class="sig-area">
+        <canvas class="sig-canvas" id="sigHomeowner"></canvas>
+        <div class="sig-line">Homeowner / Authorized Representative &nbsp;&nbsp;&nbsp; Date: <input type="date" class="sig-date" id="sigDateHomeowner" style="border:none;border-bottom:1px solid #666;font-size:inherit;padding:2px 4px;width:150px"></div>
+        <button type="button" class="sig-clear" onclick="clearSig('sigHomeowner')">Clear Signature</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Technician Signature</label>
+      <div class="sig-area">
+        <canvas class="sig-canvas" id="sigTech"></canvas>
+        <div class="sig-line">Technician &nbsp;&nbsp;&nbsp; Date: <input type="date" class="sig-date" id="sigDateTech" style="border:none;border-bottom:1px solid #666;font-size:inherit;padding:2px 4px;width:150px"></div>
+        <button type="button" class="sig-clear" onclick="clearSig('sigTech')">Clear Signature</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 10: DISCLAIMER -->
+<h2 onclick="toggleSection(this)">10. Disclaimer <span class="toggle">▼</span></h2>
+<div class="section">
+  <div class="disclaimer">
+    <p><strong>SCOPE OF INSPECTION:</strong> This leak detection inspection was performed using non-invasive methods and industry-standard equipment. The inspection is limited to accessible areas and conditions present at the time of the inspection. Hidden or concealed conditions that were not accessible or detectable by the methods employed are excluded from this report.</p>
+    <br>
+    <p><strong>LIMITATIONS:</strong> Exact Leak Detection HTX provides leak detection and diagnostic services only. We do not perform repairs, demolition, or remediation. Findings and recommendations in this report are based on the technician's professional assessment using available equipment and observable conditions. Results are not guaranteed to identify all leaks or potential sources of water intrusion.</p>
+    <br>
+    <p><strong>LIABILITY:</strong> Exact Leak Detection HTX is not responsible for damage caused by pre-existing conditions, concealed defects, or conditions that develop after the date of inspection. Our liability is limited to the fee paid for this inspection. This report is prepared for the exclusive use of the client and their insurance carrier.</p>
+    <br>
+    <p><strong>CERTIFICATION:</strong> I certify that this report accurately represents the findings of the leak detection inspection performed at the above-referenced property on the date indicated. All testing was conducted using calibrated, professional-grade equipment by a trained leak detection technician.</p>
+    <br>
+    <p style="text-align:center;margin-top:12px"><strong>Exact Leak Detection HTX</strong> &nbsp;|&nbsp; Ward Restoration Services, LLC &nbsp;|&nbsp; Houston, TX &nbsp;|&nbsp; (346) 222-3951 &nbsp;|&nbsp; info@exactleakhtx.com</p>
+  </div>
+</div>
+
+<!-- ACTIONS -->
+<div class="actions">
+  <button type="button" class="btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+</div>
+
+</div><!-- end .report -->
+
+<script>
+// Auto-fill today's date
+document.getElementById('reportDate').value = '2026-03-12';
+document.getElementById('sigDateHomeowner').value = '2026-03-12';
+document.getElementById('sigDateTech').value = '2026-03-12';
+
+// Section collapse/expand
+function toggleSection(h2){
+  var sec = h2.nextElementSibling;
+  var arrow = h2.querySelector('.toggle');
+  if(sec.classList.contains('collapsed')){
+    sec.classList.remove('collapsed');
+    arrow.textContent = '▼';
+  } else {
+    sec.classList.add('collapsed');
+    arrow.textContent = '►';
+  }
+}
+
+// Pressure drop auto-calc
+function calcDrop(){
+  var s = parseFloat(document.getElementById('startPSI').value);
+  var e = parseFloat(document.getElementById('endPSI').value);
+  var field = document.getElementById('dropPSI');
+  if(!isNaN(s) && !isNaN(e)){
+    var drop = (s - e).toFixed(1);
+    field.value = drop + ' PSI' + (drop > 2 ? ' ⚠️' : ' ✓');
+  } else {
+    field.value = '';
+  }
+}
+
+// Add additional leak finding
+var findingCount = 1;
+function addFinding(){
+  findingCount++;
+  var container = document.getElementById('findingsContainer');
+  var div = document.createElement('div');
+  div.className = 'finding-entry';
+  div.style.cssText = 'border:1px solid #e0e0e0;border-radius:6px;padding:12px;margin-bottom:12px;background:var(--light)';
+  div.innerHTML = '<strong style="color:var(--navy)">Leak Location #'+findingCount+'</strong>'+
+    '<div class="row" style="margin-top:8px">'+
+    '<div class="field"><label>Location in Home</label><input type="text" placeholder="e.g. Kitchen, under slab"></div>'+
+    '<div class="field"><label>Severity</label><select><option value="">Select...</option><option>Active — Continuous flow</option><option>Slow — Seeping</option><option>Intermittent</option><option>Pinhole</option><option>Major Break</option></select></div>'+
+    '</div>'+
+    '<div class="row"><div class="field" style="flex:1 1 100%"><label>Description of Findings</label><textarea placeholder="Detailed description"></textarea></div></div>'+
+    '<div class="row"><div class="field"><label>Affected Areas</label><input type="text" placeholder="Rooms/areas affected"></div>'+
+    '<div class="field"><label>Estimated Duration</label><select><option value="">Select...</option><option>Recent (days)</option><option>Short-term (weeks)</option><option>Long-term (months)</option><option>Chronic (years)</option><option>Unable to determine</option></select></div></div>';
+  container.appendChild(div);
+}
+
+// Photo preview
+function previewImg(input){
+  if(input.files && input.files[0]){
+    var reader = new FileReader();
+    var slot = input.parentElement;
+    var existing = slot.querySelector('img');
+    if(existing) existing.remove();
+    reader.onload = function(e){
+      var img = document.createElement('img');
+      img.src = e.target.result;
+      slot.insertBefore(img, input.nextSibling);
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+// Add extra photo slot
+function addPhotoSlot(){
+  var grid = document.querySelector('.photo-grid');
+  var div = document.createElement('div');
+  div.className = 'photo-slot';
+  div.innerHTML = '<div class="label">Additional Photo</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption">';
+  grid.appendChild(div);
+}
+// Signature pad functionality
+function initSigPad(canvasId){
+  var canvas = document.getElementById(canvasId);
+  var ctx = canvas.getContext('2d');
+  var drawing = false;
+  var lastX, lastY;
+
+  function resize(){
+    var rect = canvas.getBoundingClientRect();
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    ctx.strokeStyle = '#1B365D';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function getPos(e){
+    var rect = canvas.getBoundingClientRect();
+    var touch = e.touches ? e.touches[0] : e;
+    return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+  }
+
+  function start(e){
+    e.preventDefault();
+    drawing = true;
+    var pos = getPos(e);
+    lastX = pos.x;
+    lastY = pos.y;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+  }
+
+  function move(e){
+    if(!drawing) return;
+    e.preventDefault();
+    var pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    lastX = pos.x;
+    lastY = pos.y;
+  }
+
+  function stop(e){
+    if(drawing){
+      e.preventDefault();
+      drawing = false;
+    }
+  }
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', stop);
+  canvas.addEventListener('mouseleave', stop);
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove', move, {passive:false});
+  canvas.addEventListener('touchend', stop, {passive:false});
+}
+
+function clearSig(canvasId){
+  var canvas = document.getElementById(canvasId);
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Auto-fill signature dates from report date, and sync when changed
+function syncSigDates(){
+  var rd = document.getElementById('reportDate').value;
+  if(rd){
+    document.getElementById('sigDateHomeowner').value = rd;
+    document.getElementById('sigDateTech').value = rd;
+  }
+}
+document.getElementById('reportDate').addEventListener('change', syncSigDates);
+syncSigDates();
+
+// Geolocation → address auto-fill
+function geoFillAddress(){
+  var addrField = document.getElementById('propAddress');
+  if(!navigator.geolocation){
+    alert('Geolocation is not supported by this browser.');
+    return;
+  }
+  addrField.value = 'Locating...';
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      var lat = pos.coords.latitude;
+      var lng = pos.coords.longitude;
+      fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng+'&addressdetails=1')
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if(data && data.address){
+            var a = data.address;
+            var num = a.house_number || '';
+            var street = a.road || '';
+            var city = a.city || a.town || a.village || a.hamlet || '';
+            var state = a.state || 'TX';
+            // Use state abbreviation if possible
+            var stateAbbr = state;
+            if(state === 'Texas') stateAbbr = 'TX';
+            var zip = a.postcode || '';
+            var parts = [];
+            if(num || street) parts.push((num + ' ' + street).trim());
+            if(city) parts.push(city);
+            if(stateAbbr || zip) parts.push((stateAbbr + ' ' + zip).trim());
+            addrField.value = parts.join(', ');
+          } else {
+            addrField.value = '';
+            alert('Could not determine address. Please enter manually.');
+          }
+        })
+        .catch(function(){
+          addrField.value = '';
+          alert('Address lookup failed. Please enter manually.');
+        });
+    },
+    function(err){
+      addrField.value = '';
+      if(err.code === 1) alert('Location permission denied. Please allow location access or enter address manually.');
+      else alert('Could not get location. Please enter address manually.');
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+// Initialize signature pads
+initSigPad('sigHomeowner');
+initSigPad('sigTech');
+</script>
+</body>
+</html>
