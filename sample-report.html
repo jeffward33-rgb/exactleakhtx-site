@@ -138,7 +138,7 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
   </div>
   <div class="row">
     <div class="field"><label>Adjuster Name</label><input type="text" value="David Eastwood"></div>
-    <div class="field"><label>Adjuster Phone/Email</label><input type="text" value="david.eastwood@libertymutual.com"></div>
+    <div class="field"><label>Adjuster Phone/Email</label><input type="text" value="david.eastwood@statefarm.com"></div>
   </div>
   <div class="row">
     <div class="field"><label>Policy Number</label><input type="text" value="98-BQ-7741-2"></div>
@@ -178,7 +178,7 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
     <div class="field"><label>Main Shut-Off Location</label><input type="text" value="Garage, left wall — 3/4 inch gate valve"></div>
   </div>
   <div class="row">
-    <div class="field" style="flex:1 1 100%"><label>General Property Observations</label><textarea >Property in good overall condition. Homeowner reports noticing elevated water bills over the past 2 months and a warm/damp spot on the master bathroom floor near the toilet. No visible standing water. Faint musty odor detected in master bathroom. No visible mold. Water heater located in garage, appears functional, no visible leaks at unit.></textarea></div>
+    <div class="field" style="flex:1 1 100%"><label>General Property Observations</label><textarea>Homeowner reports a pipe burst in the second-floor laundry room on the morning of 3/8/2026. Water flowed for approximately 45 minutes before being discovered. Significant water damage visible on first-floor ceiling below laundry room, extending into hallway. Standing water was present on laundry room floor at time of loss (since extracted by homeowner). Visible water staining and sagging drywall on first-floor ceiling. No visible mold at time of inspection.</textarea></div>
   </div>
 </div>
 
@@ -188,15 +188,15 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
   <p style="font-size:0.9em;color:#666;margin-bottom:12px">Select all detection methods used during this inspection:</p>
   <div class="checkbox-group">
     <div class="checkbox-item"><input type="checkbox" id="m1" checked><label for="m1">Thermal Imaging</label></div>
-    <div class="checkbox-item"><input type="checkbox" id="m2" checked><label for="m2">Acoustic Detection</label></div>
+    <div class="checkbox-item"><input type="checkbox" id="m2"><label for="m2">Acoustic Detection</label></div>
     <div class="checkbox-item"><input type="checkbox" id="m3" checked><label for="m3">Moisture Mapping</label></div>
     <div class="checkbox-item"><input type="checkbox" id="m4" checked><label for="m4">Pressure Testing</label></div>
     <div class="checkbox-item"><input type="checkbox" id="m5" checked><label for="m5">Visual Inspection</label></div>
-    <div class="checkbox-item"><input type="checkbox" id="m6"><label for="m6">Borescope</label></div>
+    <div class="checkbox-item"><input type="checkbox" id="m6" checked><label for="m6">Borescope</label></div>
     <div class="checkbox-item"><input type="checkbox" id="m7"><label for="m7">Tracer Gas</label></div>
   </div>
   <div class="row">
-    <div class="field" style="flex:1 1 100%"><label>Testing Notes / Additional Methods</label><textarea >Equipment used: FLIR E86 thermal camera, Sewerin AquaTest T10 acoustic detector, Tramex MRH III moisture meter, Watts IWTG pressure test gauge (0-200 PSI). Visual inspection of all accessible plumbing fixtures and connections. Pressure test performed on hot and cold supply lines independently.></textarea></div>
+    <div class="field" style="flex:1 1 100%"><label>Testing Notes / Additional Methods</label><textarea>Equipment used: FLIR E86 thermal camera, Tramex MRH III moisture meter, Watts IWTG pressure test gauge (0-200 PSI). Visual inspection of all accessible plumbing fixtures and connections. Pressure test performed on supply lines to confirm integrity after burst repair area was isolated. Moisture mapping performed on first and second floors to document full extent of water migration.</textarea></div>
   </div>
 </div>
 
@@ -205,39 +205,41 @@ h2 .toggle{font-size:0.8em;opacity:0.7}
 <div class="section">
   <div class="row">
     <div class="field"><label>Water Meter Reading — Arrival</label><input type="text" value="47,892.3 gal"></div>
-    <div class="field"><label>Water Meter Reading — Departure</label><input type="text" value="47,893.1 gal"></div>
+    <div class="field"><label>Water Meter Reading — Departure</label><input type="text" value="47,892.4 gal"></div>
     <div class="field"><label>Meter Moving on Arrival?</label>
-      <select><option value="">Select...</option><option>Yes — actively spinning</option><option selected>Yes — slow movement</option><option>No — stationary</option><option>Unable to determine</option></select>
+      <select><option value="">Select...</option><option>Yes — actively spinning</option><option>Yes — slow movement</option><option selected>No — stationary</option><option>Unable to determine</option></select>
     </div>
   </div>
   <div class="row">
-    <div class="field"><label>Static Water Pressure (PSI)</label><input type="number" value="62"></div>
+    <div class="field"><label>Static Water Pressure (PSI)</label><input type="number" value="58"></div>
     <div class="field"><label>Supply Line Test Result</label>
-      <select><option value="">Select...</option><option selected>Pass — No leak detected</option><option selected>Fail — Leak detected</option><option>Inconclusive</option><option>Not Tested</option></select>
+      <select><option value="">Select...</option><option selected>Pass — No leak detected</option><option>Fail — Leak detected</option><option>Inconclusive</option><option>Not Tested</option></select>
     </div>
   </div>
   <div class="row">
     <div class="field"><label>Drain Line Test Result</label>
-      <select><option value="">Select...</option><option>Pass — No leak detected</option><option>Fail — Leak detected</option><option>Inconclusive</option><option>Not Tested</option></select>
+      <select><option value="">Select...</option><option selected>Pass — No leak detected</option><option>Fail — Leak detected</option><option>Inconclusive</option><option>Not Tested</option></select>
     </div>
     <div class="field"><label>Irrigation System Test</label>
       <select><option value="">Select...</option><option>Pass — No leak detected</option><option>Fail — Leak detected</option><option>Inconclusive</option><option>Not Tested</option><option selected>N/A — No irrigation</option></select>
     </div>
   </div>
   <div class="row">
-    <div class="field" style="flex:1 1 100%"><label>Fixtures Tested</label><textarea >All fixtures tested with water running and shut off: kitchen sink, kitchen dishwasher supply, master bath toilet, master bath shower, master bath dual vanity, hall bath toilet, hall bath shower/tub, guest bath toilet, laundry supply lines (hot/cold), water heater, 3 exterior hose bibs (front, back left, back right). All fixture supply connections intact — no leaks detected at accessible connections.></textarea></div>
+    <div class="field" style="flex:1 1 100%"><label>Fixtures Tested</label><textarea>All fixtures tested with water running and shut off: kitchen sink, kitchen dishwasher supply, master bath toilet, master bath shower, master bath dual vanity, hall bath toilet, hall bath shower/tub, guest bath toilet, water heater, 3 exterior hose bibs (front, back left, back right). Laundry room supply lines inspected — burst identified on cold water supply line to washing machine (3/4" copper). Homeowner had already shut off laundry supply valves prior to our arrival. All other fixture connections intact.</textarea></div>
   </div>
   <div class="row">
-    <div class="field" style="flex:1 1 100%"><label>Areas of Elevated Moisture (with readings)</label><textarea >Master bath floor (tile, near toilet base) — 38% — Normal &lt;15%
-Master bath floor (tile, 3ft from toilet toward shower) — 29% — Normal &lt;15%
-Master bath subfloor at wall base — 44% — Normal &lt;15%
-Master bedroom carpet (adjacent to bath wall) — 22% — Normal &lt;15%
-Hall bath floor — 8% — Normal ✓
-Kitchen floor near dishwasher — 6% — Normal ✓
-All other tested areas within normal range.></textarea></div>
+    <div class="field" style="flex:1 1 100%"><label>Areas of Elevated Moisture (with readings)</label><textarea>Second-floor laundry room floor (tile) — 52% — Normal &lt;15%
+Second-floor laundry room wall base (behind washer) — 61% — Normal &lt;15%
+Second-floor hallway carpet (adjacent to laundry door) — 34% — Normal &lt;15%
+First-floor hallway ceiling drywall (directly below laundry) — 78% — Normal &lt;15%
+First-floor hallway wall (below ceiling damage) — 41% — Normal &lt;15%
+First-floor living room ceiling (east corner, near hallway) — 28% — Normal &lt;15%
+Kitchen floor — 7% — Normal ✓
+Master bath floor — 6% — Normal ✓
+All other tested areas within normal range.</textarea></div>
   </div>
   <div class="row">
-    <div class="field" style="flex:1 1 100%"><label>Thermal Anomalies Detected</label><textarea >Thermal anomaly detected on master bathroom floor: approximately 3ft x 4ft area showing elevated temperature (+6.2°F above surrounding floor surface). Pattern consistent with hot water supply line leak under slab. Warmest point located approximately 18 inches northwest of toilet base. No thermal anomalies detected in any other areas of the home.></textarea></div>
+    <div class="field" style="flex:1 1 100%"><label>Thermal Anomalies Detected</label><textarea>Thermal imaging of first-floor ceiling revealed a large moisture plume approximately 6ft x 8ft centered below the second-floor laundry room. Temperature differential of -4.8°F compared to surrounding dry ceiling, consistent with active evaporative cooling from saturated drywall and insulation. Secondary thermal anomaly detected on the east wall of the first-floor hallway extending approximately 3ft down from the ceiling line, indicating water migration through the wall cavity. Borescope inspection of the wall cavity confirmed wet insulation. No thermal anomalies detected in any other areas of the home.</textarea></div>
   </div>
 </div>
 
@@ -246,7 +248,7 @@ All other tested areas within normal range.></textarea></div>
 <div class="section">
   <div class="row">
     <div class="field"><label>System Isolated</label>
-      <select><option value="">Select...</option><option selected>Hot Supply Only</option><option>Cold Supply Only</option><option>Both Hot & Cold</option><option>Whole House</option><option>Specific Zone</option></select>
+      <select><option value="">Select...</option><option>Hot Supply Only</option><option>Cold Supply Only</option><option>Both Hot & Cold</option><option selected>Whole House</option><option>Specific Zone</option></select>
     </div>
     <div class="field"><label>Test Pressure (PSI)</label><input type="number" value="60" id="testPSI"></div>
     <div class="field"><label>Test Duration</label>
@@ -255,25 +257,23 @@ All other tested areas within normal range.></textarea></div>
   </div>
   <div class="row">
     <div class="field"><label>Starting Pressure (PSI)</label><input type="number" id="startPSI" oninput="calcDrop()" value="60"></div>
-    <div class="field"><label>Ending Pressure (PSI)</label><input type="number" id="endPSI" oninput="calcDrop()" value="48"></div>
+    <div class="field"><label>Ending Pressure (PSI)</label><input type="number" id="endPSI" oninput="calcDrop()" value="60"></div>
     <div class="field"><label>Pressure Drop (PSI)</label><input type="text" id="dropPSI" readonly style="background:#f0f0f0"></div>
   </div>
   <div class="row">
     <div class="field"><label>Result</label>
       <div style="display:flex;gap:16px;margin-top:4px">
-        <div class="checkbox-item" style="flex:0"><input type="radio" name="ptResult" id="ptPass" value="pass"><label for="ptPass">PASS</label></div>
-        <div class="checkbox-item" style="flex:0"><input type="radio" name="ptResult" id="ptFail" value="fail" checked><label for="ptFail">FAIL</label></div>
+        <div class="checkbox-item" style="flex:0"><input type="radio" name="ptResult" id="ptPass" value="pass" checked><label for="ptPass">PASS</label></div>
+        <div class="checkbox-item" style="flex:0"><input type="radio" name="ptResult" id="ptFail" value="fail"><label for="ptFail">FAIL</label></div>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="field" style="flex:1 1 100%"><label>Pressure Test Notes</label><textarea >Initial test: whole house pressurized to 60 PSI with all fixtures closed — pressure dropped to 52 PSI in 15 minutes. FAIL.
+    <div class="field" style="flex:1 1 100%"><label>Pressure Test Notes</label><textarea>Laundry supply valves were closed by homeowner prior to arrival. Burst pipe visually confirmed at the cold water supply line behind the washing machine — approximately 2-inch longitudinal split in 3/4" copper pipe.
 
-Isolation test #1: Cold supply isolated, hot supply pressurized to 60 PSI — dropped to 48 PSI in 15 minutes. FAIL — confirms leak on hot supply side.
+With laundry supply valves closed, whole house pressurized to 60 PSI with all other fixtures shut off. Pressure held at 60 PSI for 15 minutes. PASS — no additional leaks detected in the remainder of the plumbing system.
 
-Isolation test #2: Hot supply isolated, cold supply pressurized to 60 PSI — held at 60 PSI for 15 minutes. PASS — cold supply intact.
-
-Conclusion: Active leak confirmed on hot water supply line. Pressure loss rate and thermal imaging indicate leak location under master bathroom slab.></textarea></div>
+Conclusion: Pipe burst isolated to the cold water supply line in the second-floor laundry room. No other leaks present. Damage to first-floor ceiling, hallway walls, and insulation is consistent with the volume and duration of the burst as reported by the homeowner.</textarea></div>
   </div>
 </div>
 
@@ -284,40 +284,41 @@ Conclusion: Active leak confirmed on hot water supply line. Pressure loss rate a
     <div class="finding-entry" style="border:1px solid #e0e0e0;border-radius:6px;padding:12px;margin-bottom:12px;background:var(--light)">
       <strong style="color:var(--navy)">Leak Location #1</strong>
       <div class="row" style="margin-top:8px">
-        <div class="field"><label>Location in Home</label><input type="text" value="Master bathroom, under slab — hot water supply line, approx. 18 inches NW of toilet base"></div>
+        <div class="field"><label>Location in Home</label><input type="text" value="Second-floor laundry room — cold water supply line to washing machine, behind unit on back wall"></div>
         <div class="field"><label>Severity</label>
-          <select><option value="">Select...</option><option selected>Active — Continuous flow</option><option>Slow — Seeping</option><option>Intermittent</option><option>Pinhole</option><option>Major Break</option></select>
+          <select><option value="">Select...</option><option>Active — Continuous flow</option><option>Slow — Seeping</option><option>Intermittent</option><option>Pinhole</option><option selected>Major Break</option></select>
         </div>
       </div>
       <div class="row">
-        <div class="field" style="flex:1 1 100%"><label>Description of Findings</label><textarea >Active leak identified on the hot water supply line running beneath the concrete slab foundation in the master bathroom area. Leak was detected through a combination of methods:
+        <div class="field" style="flex:1 1 100%"><label>Description of Findings</label><textarea>Pipe burst identified on the 3/4" copper cold water supply line serving the washing machine in the second-floor laundry room. The burst is a longitudinal split approximately 2 inches in length, located 6 inches from the shut-off valve behind the washer. The failure is consistent with age-related copper pipe degradation (home built 2004, original plumbing).
 
-1. Thermal imaging revealed a 3ft x 4ft warm zone on the bathroom floor (6.2°F above ambient)
-2. Acoustic detection confirmed water flow noise concentrated at a point approx. 18" NW of the toilet base
-3. Moisture meter readings showed elevated moisture levels (38-44%) across the affected area
-4. Pressure test confirmed hot supply line failure (12 PSI drop in 15 minutes)
+Water from the burst flowed for approximately 45 minutes before the homeowner discovered it and shut off the laundry supply valves. Water migrated through the laundry room floor, saturating the subfloor and dripping through to the first-floor ceiling below.
 
-Based on the thermal pattern and acoustic signature, the leak appears to be at a joint or fitting on the copper hot water supply line. The pipe is estimated to be at a depth of approximately 4-6 inches below the slab surface. The sustained leak has caused moisture migration into the adjacent master bedroom carpet and subfloor materials.></textarea></div>
+Damage documentation:
+1. Second-floor laundry room: saturated subfloor, water damage to baseboards, moisture in wall cavity behind washer
+2. First-floor hallway ceiling: approximately 6ft x 8ft area of saturated drywall, visible sagging and water staining, wet insulation confirmed via borescope
+3. First-floor hallway wall: moisture migration approximately 3ft down from ceiling line on east wall, wet insulation in wall cavity
+4. First-floor living room: minor moisture detected in ceiling at east corner near hallway (28%) — early stage migration</textarea></div>
       </div>
       <div class="row">
-        <div class="field"><label>Affected Areas</label><input type="text" value="Master bathroom floor, master bathroom wall base, master bedroom carpet (adjacent wall, approx. 2ft into room)"></div>
+        <div class="field"><label>Affected Areas</label><input type="text" value="Second-floor laundry room floor/walls, first-floor hallway ceiling and east wall, first-floor living room ceiling (east corner)"></div>
         <div class="field"><label>Estimated Duration</label>
-          <select><option value="">Select...</option><option>Recent (days)</option><option selected>Short-term (weeks)</option><option>Long-term (months)</option><option>Chronic (years)</option><option>Unable to determine</option></select>
+          <select><option value="">Select...</option><option selected>Recent (days)</option><option>Short-term (weeks)</option><option>Long-term (months)</option><option>Chronic (years)</option><option>Unable to determine</option></select>
         </div>
       </div>
     </div>
   </div>
   
   <div class="row" style="margin-top:16px">
-    <div class="field" style="flex:1 1 100%"><label>Summary of All Findings</label><textarea >SUMMARY: Active hot water supply line leak confirmed beneath the concrete slab foundation in the master bathroom of the residence at 4218 Cypress Ridge Trail, Spring, TX 77386.
+    <div class="field" style="flex:1 1 100%"><label>Summary of All Findings</label><textarea>SUMMARY: Pipe burst confirmed on the 3/4" copper cold water supply line in the second-floor laundry room of the residence at 4218 Cypress Ridge Trail, Spring, TX 77386.
 
-The leak was identified using thermal imaging, acoustic detection, moisture mapping, and pressure testing. All methods converge on a single leak point located approximately 18 inches northwest of the master bathroom toilet base.
+The burst — a 2-inch longitudinal split — occurred on the cold water supply line to the washing machine. Water flowed for approximately 45 minutes before being shut off by the homeowner on the morning of 3/8/2026. The failure is consistent with age-related pipe degradation on original 2004 copper plumbing.
 
-The hot supply line failed pressure testing (12 PSI drop in 15 minutes at 60 PSI). Cold supply line passed. Drain lines were not tested as the leak signature is consistent with a pressurized supply line failure.
+Water migrated from the second-floor laundry room through the subfloor and into the first-floor ceiling, hallway wall cavity, and into the east corner of the living room ceiling. Moisture levels in affected areas range from 28-78% (normal &lt;15%). Thermal imaging and borescope inspection confirmed saturated insulation in the first-floor ceiling and east hallway wall cavity.
 
-Moisture levels in the affected area range from 22-44% (normal &lt;15%). The leak appears to have been active for approximately 2-4 weeks based on moisture migration patterns and homeowner-reported timeline of elevated water bills.
+Pressure testing of the remainder of the plumbing system passed at 60 PSI for 15 minutes with no pressure loss, confirming the burst is isolated to the laundry supply line. No additional leaks detected.
 
-Immediate repair is recommended to prevent further damage to the slab, subfloor, and adjacent building materials. A licensed plumber should perform a spot repair or reroute of the affected hot water supply line.></textarea></div>
+Immediate plumbing repair and water mitigation are recommended to prevent secondary damage and mold growth.</textarea></div>
   </div>
 </div>
 
@@ -326,15 +327,15 @@ Immediate repair is recommended to prevent further damage to the slab, subfloor,
 <div class="section">
   <div class="photo-grid">
     <div class="photo-slot"><div class="label">Exterior / Front of Property</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
-    <div class="photo-slot"><div class="label">Water Meter</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
-    <div class="photo-slot"><div class="label">Affected Area #1</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
-    <div class="photo-slot"><div class="label">Affected Area #2</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
-    <div class="photo-slot"><div class="label">Thermal Image #1</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
-    <div class="photo-slot"><div class="label">Thermal Image #2</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
+    <div class="photo-slot"><div class="label">Burst Pipe — Close-Up</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
+    <div class="photo-slot"><div class="label">Laundry Room — Source Area</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
+    <div class="photo-slot"><div class="label">First-Floor Ceiling Damage</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
+    <div class="photo-slot"><div class="label">Thermal Image — Ceiling</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
+    <div class="photo-slot"><div class="label">Thermal Image — Wall</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
     <div class="photo-slot"><div class="label">Moisture Reading</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
-    <div class="photo-slot"><div class="label">Equipment Used</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
-    <div class="photo-slot"><div class="label">Damage Documentation #1</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
-    <div class="photo-slot"><div class="label">Damage Documentation #2</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
+    <div class="photo-slot"><div class="label">Hallway Wall Damage</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
+    <div class="photo-slot"><div class="label">Borescope — Wall Cavity</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
+    <div class="photo-slot"><div class="label">Pressure Test Gauge</div><input type="file" accept="image/*" capture="environment" onchange="previewImg(this)"><input type="text" class="caption-input" placeholder="Caption"></div>
   </div>
   
 </div>
@@ -343,15 +344,17 @@ Immediate repair is recommended to prevent further damage to the slab, subfloor,
 <h2 onclick="toggleSection(this)">8. Recommendations <span class="toggle">▼</span></h2>
 <div class="section">
   <div class="row">
-    <div class="field" style="flex:1 1 100%"><label>Recommended Repairs</label><textarea >1. Engage a licensed plumber to perform a spot repair or reroute of the hot water supply line in the master bathroom area. Reroute through attic or walls is recommended over slab penetration to prevent future slab leak risk.
+    <div class="field" style="flex:1 1 100%"><label>Recommended Repairs</label><textarea>1. Engage a licensed plumber to replace the failed section of the cold water supply line in the second-floor laundry room. Recommend replacing the supply line from the shut-off valve to the washer connection. Consider upgrading to braided stainless steel supply lines for both hot and cold to prevent future failures.
 
-2. After plumbing repair is completed, water mitigation should be performed in the master bathroom and adjacent master bedroom area. Affected materials (tile underlayment, carpet pad, baseboard) should be evaluated for removal and drying.
+2. Water mitigation should be performed immediately in all affected areas. Saturated drywall on the first-floor hallway ceiling will likely require removal and replacement. Wet insulation in the ceiling and east wall cavity should be removed and dried. Second-floor laundry room subfloor should be evaluated for structural integrity after drying.
 
-3. Post-repair pressure test recommended to confirm successful repair and no additional leaks.></textarea></div>
+3. Post-repair pressure test recommended to confirm successful repair.
+
+4. Once drying is complete, affected areas should be inspected for mold before any rebuild work begins.</textarea></div>
   </div>
   <div class="row">
     <div class="field"><label>Urgency Level</label>
-      <select><option value="">Select...</option><option>Emergency — Immediate repair needed</option><option selected>Urgent — Within 24-48 hours</option><option>Standard — Schedule at convenience</option><option>Monitor — Re-inspect in 30 days</option></select>
+      <select><option value="">Select...</option><option selected>Emergency — Immediate repair needed</option><option>Urgent — Within 24-48 hours</option><option>Standard — Schedule at convenience</option><option>Monitor — Re-inspect in 30 days</option></select>
     </div>
     <div class="field"><label>Referral to Plumber?</label>
       <select><option value="">Select...</option><option selected>Yes — Homeowner requested referral</option><option>No — Homeowner has own plumber</option><option>N/A</option></select>
@@ -366,7 +369,7 @@ Immediate repair is recommended to prevent further damage to the slab, subfloor,
     </div>
   </div>
   <div class="row">
-    <div class="field" style="flex:1 1 100%"><label>Additional Notes</label><textarea >Homeowner was advised to monitor water usage and meter readings. If water meter continues spinning with all fixtures off, main shut-off should be closed until repair is completed. Provided referral to Spencer's Plumbing (Kingwood, TX) at homeowner's request. Recommend re-inspection after plumbing repair to confirm resolution and assess any additional drying needs.></textarea></div>
+    <div class="field" style="flex:1 1 100%"><label>Additional Notes</label><textarea>Homeowner was advised to leave laundry supply valves in the OFF position until plumbing repair is completed. First-floor ceiling drywall in the hallway is sagging and at risk of collapse — homeowner advised to avoid the area and consider placing a tarp and bucket to catch any further dripping. Provided referral to Spencer's Plumbing (Kingwood, TX) at homeowner's request for the pipe repair. Water mitigation referral also provided. Recommend re-inspection after plumbing repair and drying to confirm resolution and clear for rebuild.</textarea></div>
   </div>
 </div>
 
@@ -376,7 +379,7 @@ Immediate repair is recommended to prevent further damage to the slab, subfloor,
   <div class="row">
     <div class="field"><label>Departure Time</label><input type="datetime-local" value="2026-03-12T11:45"></div>
     <div class="field"><label>Water Status at Departure</label>
-      <select><option value="">Select...</option><option selected>Water ON — Normal operation</option><option>Water OFF — Main shut off at meter</option><option>Water OFF — Shut off at house valve</option><option>Water OFF — Homeowner request</option><option>Partial — Hot water off, cold on</option></select>
+      <select><option value="">Select...</option><option>Water ON — Normal operation</option><option>Water OFF — Main shut off at meter</option><option>Water OFF — Shut off at house valve</option><option>Water OFF — Homeowner request</option><option selected>Partial — Hot water off, cold on</option></select>
     </div>
   </div>
   <div class="row">
@@ -384,11 +387,11 @@ Immediate repair is recommended to prevent further damage to the slab, subfloor,
       <select><option value="">Select...</option><option selected>Open (normal)</option><option>Closed</option><option>Partially closed</option></select>
     </div>
     <div class="field"><label>Temporary Measures Taken</label>
-      <select><option value="">Select...</option><option selected>None</option><option>Water shut off to affected area</option><option>Temporary clamp applied</option><option>Other (see notes)</option></select>
+      <select><option value="">Select...</option><option>None</option><option selected>Water shut off to affected area</option><option>Temporary clamp applied</option><option>Other (see notes)</option></select>
     </div>
   </div>
   <div class="row">
-    <div class="field" style="flex:1 1 100%"><label>Departure Notes</label><textarea >Property left with water on at homeowner's request. Homeowner advised to shut off water at main if leak worsens or meter shows increased flow. All equipment removed from premises. Report and thermal images to be delivered via email same day. Homeowner provided with copy of business card and direct phone number for any follow-up questions.></textarea></div>
+    <div class="field" style="flex:1 1 100%"><label>Departure Notes</label><textarea>Property left with laundry supply valves in the OFF position. Main water supply left ON — rest of house plumbing tested and confirmed intact. Homeowner advised that first-floor hallway ceiling is compromised and to avoid the area. Tarp and bucket placed under worst area of sagging drywall as a temporary measure. All equipment removed from premises. Report with photos and thermal images to be delivered via email same day. Homeowner provided with copy of business card and direct phone number for any follow-up questions.</textarea></div>
   </div>
   <div class="row">
     <div class="field">
