@@ -180,7 +180,7 @@
   <!-- Blog -->
   <url>
     <loc>https://exactleakhtx.com/blog</loc>
-    <lastmod>2026-03-30</lastmod>
+    <lastmod>2026-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -205,6 +205,12 @@
   <url>
     <loc>https://exactleakhtx.com/blog/thermal-imaging-leak-detection</loc>
     <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://exactleakhtx.com/blog/high-water-bill-houston</loc>
+    <lastmod>2026-04-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
